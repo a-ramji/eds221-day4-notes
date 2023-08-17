@@ -1,0 +1,126 @@
+---
+title: "eds221-day4-notes"
+---
+
+## EDS 221 Day 4 Notes
+
+Slides: https://docs.google.com/presentation/d/e/2PACX-1vQI2_jMfAiH4hAVXO8AYE5g8w6iC_N3LIZhZwYYQI5vRRRCwD6_517EkzUU0zwCM2a-BcZvx3YOLyno/pub?start=false&loop=false&delayms=3000&slide=id.ge5302531a5_0_0
+
+```{r}
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+```
+
+## Nested for loops
+
+### Example 1:
+
+```{r}
+
+file_prefix <- c("temp", "ph", "salinity")
+file_suffix <- c(1, 2, 3, 4, 5)
+
+for (i in seq_along(file_prefix)) {
+  for (j in seq_along(file_suffix)) {
+    print(paste0(file_prefix[i], "_", file_suffix[j]))
+  }
+}
+
+```
+
+### Example 2:
+
+```{r}
+
+odds <- c(1, 3, 5)
+evens <- c(2, 4, 6, 8)
+
+for (i in seq_along(odds)) {
+  for (j in seq_along(evens)) {
+    print(odds[i] * evens[j])
+  }
+}
+```
+
+## Functions:
+
+#### self-contained bits of code that accept user input(s), do something with it, and return a useful output.
+
+"You should consider writing a function whenever you've copied and pasted a block of code more than twice (o.e. you now have three copies of the same code)." - Chapter 19 (ch 26 in 2e) *Functions* in R for Data Science (Grolemund & Wickham) https://r4ds.hadley.nz/functions
+
+## Benefits of writing functions
+
+(also from ch19 (ch 26 in 2e) in R for Data Science
+
+1.  You can give a function an evocative name that makes your code easier to understand.
+
+2.  As requirements change, you only need to update code in one place, instead of many.
+
+3.  You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+
+4.  It makes it easier to reuse work from project-to-project, increasing your productivity over time.
+
+## Anatomy of a function (in R)
+
+```{r}
+function_name <- function(bird, dog) {
+  pets = bird + dog
+  return(pets)
+}
+```
+
+A function in R:
+
+```{r}
+exclaim_age <- function(age) {
+  print(paste("I am", age, "years old!"))
+}
+
+exclaim_age(age = 10)
+```
+
+ex. from class:
+
+```{r}
+demo_function <- function(apples, oranges) {
+  print(paste("I love", apples, "and", oranges))
+}
+
+demo_function("pink ladies", "mandarins")
+demo_function(4, 9)
+demo_function(apples = 3, oranges = 10)
+demo_function(oranges = 10, apples = 3)
+```
+
+```{r}
+demo_function("hello", 5)
+
+# this works because of the way our print line is written. If we instead had print(apples + oranges), this would return in an error because you can't add a string and a numeric value! 
+```
+
+### Naming: 
+
+https://r4ds.hadley.nz/functions#style
+
+" R doesn\'t care what your function or arguments are called but the names make a big difference for humans. Ideally, the name of your function will be short, but clearly evoke what the function does. That\'s hard! But it\'s better to be clear than short, as RStudio\'s autocomplete makes it easy to type long names.
+
+Generally, function names should be verbs, and arguments should be nouns. There are some exceptions: nouns are ok if the function computes a very well known noun (i.e. [`mean()`](https://rdrr.io/r/base/mean.html) is better than `compute_mean()`), or accessing some property of an object (i.e. [`coef()`](https://rdrr.io/r/stats/coef.html) is better than `get_coefficients()`). Use your best judgement and don\'t be afraid to rename a function if you figure out a better name later. "
+
+ex: f() is too short, my_awesome_function() is not a verb or descriptive. impute_missing() and collapse_years() are long, but clear
+
+## A function with conditions:
+
+We can combine what we've already learned when building new functions.
+
+```{r}
+animal_age <- function(animal, age) {
+  if (animal == "dog") {
+    print(age * 7)
+  } else if (animal == "goat") {
+    print(age * 4.7)
+  }
+}
+
+animal_age("goat", 7)
+```
